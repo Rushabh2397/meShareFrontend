@@ -4,19 +4,23 @@ import Navbar from './components/Navbar'
 import Register from './components/Register'
 import Login from './components/Login'
 import BNavbar from './components/BNavbar'
-import Images from './components/Images'
+import Files from './components/File'
+import './config/AxiosConfig'
+import { PrivateRoute } from './components/PrivateRoute'
 
 function App() {
+  
   return (
     <div className="App">
-      <Navbar/>
+      <Navbar />
       <Switch>
         <Route path='/' component={Home} exact></Route>
         <Route path='/register' component={Register} exact></Route>
         <Route path='/login' component={Login} exact></Route>
-        <Route path='/images' component={Images} exact></Route>
+        <PrivateRoute path='/doc' component={Files} exact></PrivateRoute>
+        
       </Switch>
-      <BNavbar/>
+      <BNavbar />
     </div>
   );
 }
