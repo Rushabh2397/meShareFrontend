@@ -5,19 +5,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { LoginProvider } from '../src/components/context/LoginProvider'
-import { FileProvider } from '../src/components/context/FileProvider'
-import { SocketProvider } from '../src/components/context/SocketProvider'
+import { FileProvider } from '../src/context/FileContext'
+//import { SocketProvider } from '../src/components/context/SocketProvider'
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <SocketProvider>
+      {/* <SocketProvider> */}
         <LoginProvider>
           <FileProvider>
             <App />
           </FileProvider>
         </LoginProvider>
-      </SocketProvider>
+      {/* </SocketProvider> */}
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
