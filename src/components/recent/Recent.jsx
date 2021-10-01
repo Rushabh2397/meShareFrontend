@@ -1,8 +1,9 @@
-import { Tooltip, Typography } from '@material-ui/core';
+import { TextField, Tooltip, Typography } from '@material-ui/core';
 import ImageList from '@material-ui/core/ImageList';
 import ImageListItem from '@material-ui/core/ImageListItem';
 import { makeStyles } from '@material-ui/core/styles';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import {Link} from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -63,6 +64,14 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         right: "5px",
         top: "4px"
+    },
+    textUrl:{
+        border:'1px solid black',
+        marginBottom:"0.6rem",
+        padding:"10px",
+        borderRadius:"6px",
+        fontSize:"1.2rem",
+        letterSpacing:"0.1rem"
     }
 }));
 
@@ -74,7 +83,7 @@ const Recent = ({ userFiles }) => {
     const classes = useStyles()
     const imageArr = userFiles.filter((file) => file.type === 'image');
     const docsArr = userFiles.filter((file) => file.type === 'doc');
-
+    const textArr = userFiles.filter((file) => file.type === 'text' || file.type === 'url')
     const downloadFile = (file, name) => {
         fetch(file)
             .then(response => {
@@ -143,7 +152,7 @@ const Recent = ({ userFiles }) => {
                 </div>
             }
 
-            {docsArr.length > 0 && <div style={{ marginBottom: "1.2rem" }}>Documents</div>}
+            {docsArr.length > 0 && <Typography className={classes.name} variant="h5">Documents</Typography>}
             {
                 <div className={classes.imageView}>
                     {
@@ -179,6 +188,21 @@ const Recent = ({ userFiles }) => {
                         })
                     }
                 </div>
+            }
+
+            {textArr.length > 0 && <Typography className={classes.name} variant="h5">Texts / Urls</Typography>}
+            {
+                textArr.map(text=>{
+                    return <div className={classes.textUrl}>
+                        {
+                            text.type==='text'
+                            ?
+                            <span>{text.text}</span>
+                            :
+                            <a href={`${text.text}`} >{text.text}</a>
+                        }
+                    </div>
+                })
             }
 
         </div>

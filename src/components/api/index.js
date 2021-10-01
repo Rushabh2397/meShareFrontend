@@ -16,3 +16,7 @@ export const getAllFiles = ()=>{
 export const uploadFile = (data)=>{
     return axios.post(`${process.env.REACT_APP_BACKEND}doc/auth/upload`,data)
 }
+
+export const addText = (data)=>{
+    return axios.post(`${process.env.REACT_APP_BACKEND}doc/auth/add_text`,data)
+}

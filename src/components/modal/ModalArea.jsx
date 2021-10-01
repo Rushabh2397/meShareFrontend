@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Button, IconButton, Paper, TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import TextareaAutosize from 'react-textarea-autosize';
+import {addText} from '../api'
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -49,9 +51,21 @@ const useStyles = makeStyles((theme) => ({
 
 const ModalArea = ({ open, handleClose, type }) => {
     const classes = useStyles();
+    const [text,setText] = useState();
+
     const InputProps = {
         classsName: classes.inputProps
     }
+
+    const addUserText = async ()=>{
+        try {
+            handleClose()
+            const res = await addText({text:text})
+        } catch (error) {
+            
+        }   
+    }
+
     return (
         <Modal
             open={open}
@@ -76,14 +90,14 @@ const ModalArea = ({ open, handleClose, type }) => {
                                     <h5>Text Message</h5>
                                     <TextareaAutosize
                                         className={classes.text}
-
+                                        onChange={(e)=>{setText(e.target.value)}} 
                                     />
                                     {/* <TextField style={{border:"none"}} InputProps={InputProps} /> */}
                                     {/* <input type="text" className={classes.text}/> */}
                                     <div className={classes.menuButton}>
 
                                         {/* <SendIcon color="action" fontSize="medium" /> */}
-                                        <Button size="small" variant="contained" color="primary">Send</Button>
+                                        <Button size="small" variant="contained" color="primary" onClick={addUserText}>Send</Button>
                                     </div>
                                 </Paper>
                             </div>
