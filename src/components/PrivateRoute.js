@@ -1,11 +1,11 @@
 import {Route,Redirect} from 'react-router-dom'
-import {useLogin} from './context'
+import {useAuth} from '../context/AuthContext'
 
 
 export let PrivateRoute= ({ path,...props })=> {
 
-    const { isLoggedIn } = useLogin();
-    return isLoggedIn ? (
+    const { user } = useAuth();
+    return user.token ? (
       <Route  {...props} path={path}/>
     ) : (
       <Redirect to= "/login"/>

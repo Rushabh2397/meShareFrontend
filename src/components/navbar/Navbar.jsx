@@ -2,12 +2,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import Sidebar from '../sidebar/Sidebar'
-import {Link} from 'react-router-dom'
 import { Avatar } from '@material-ui/core';
+import { useState } from 'react';
+import ProfileMenu from '../profileMenu/ProfileMenu'
+import { useAuth } from '../../context/AuthContext'
+import {Link} from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,27 +23,36 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
-        letterSpacing:'0.2rem'
+        letterSpacing: '0.2rem'
     },
-    navLink:{
-        display:"flex",
-        gap:"1rem",
-        justifyContent:"center",
-        alignItems:"center"
+    navLink: {
+        display: "flex",
+        gap: "1rem",
+        justifyContent: "center",
+        alignItems: "center"
     },
-    navItem:{
-        fontSize:"1.2rem"
+    navItem: {
+        fontSize: "1.2rem"
     }
 }));
 
 
 const Navbar = () => {
     const classes = useStyles();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const {user} = useAuth();
 
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <div className={classes.root}>
-            <AppBar position="fixed" style={{ zIndex: 1300,}} color="transparent" >
+            <AppBar position="fixed" style={{ zIndex: 1300, }} color="transparent" >
                 <Toolbar className={classes.navContainer}>
                     <Typography variant="h4" className={classes.title}>
                         MeShare
@@ -52,16 +61,19 @@ const Navbar = () => {
                     <Button color="inherit">Signup</Button> */}
                     <div>
                         <ul className={classes.navLink}>
-                            {/* <li className={classes.navItem}><Link to="/login" >Login</Link></li>
-                            <li className={classes.navItem}><Link to="/signup" >Signup</Link></li> */}
-                            <Avatar>RS</Avatar>
+                            {!user.token &&<li className={classes.navItem}><Link to="/login" >Login</Link></li>}
+                            {!user.token &&<li className={classes.navItem}><Link to="/signup" >Signup</Link></li>}
+                            {user.token && <span onClick={handleClick}  ><Avatar >RS</Avatar ></span>}
+
                             {/* <li className={classes.navItem}><Link to="/signup" >Logout</Link></li> */}
 
                         </ul>
                     </div>
                 </Toolbar>
             </AppBar>
-            <Sidebar />
+            <ProfileMenu anchorEl={anchorEl} handleClick={handleClick} handleClose={handleClose}/>
+            {user.token &&<Sidebar />}
+            
         </div>
 
     );

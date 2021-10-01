@@ -5,6 +5,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ModalArea from '../modal/ModalArea'
 import { useState } from 'react';
+import DragAndDrop from '../dragAndDrop/DragAndDrop'
+import { useDoc } from '../../context/FileContext'
+import { uploadFile, getAllFiles } from '../api'
 
 const drawerWidth = 70;
 
@@ -15,20 +18,20 @@ const useStyles = makeStyles((theme) => ({
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
-        border:"none"
+        border: "none"
     },
     drawerPaper: {
         width: drawerWidth,
         backgroundColor: 'white',
-        border:"none"
+        border: "none"
     },
     drawerContainer: {
         display: 'flex',
         justifyContent: 'center',
         flexDirection: "column",
         textAlign: 'center',
-        overflow: 'auto',
-        border:"none"
+        overflow: 'hidden',
+        border: "none"
     },
     iconArea: {
         display: 'flex',
@@ -53,16 +56,51 @@ const useStyles = makeStyles((theme) => ({
 const Sidebar = () => {
 
     const classes = useStyles();
+    const { dispatch } = useDoc()
     const [open, setOpen] = useState(false);
-    const [type,setType] = useState('text')
-    
+    const [type, setType] = useState('text')
+
     const handleModal = (type) => {
         setOpen(!open)
         setType(type)
     }
 
-    const handleClose = ()=>{
+    const handleClose = () => {
         setOpen(false)
+    }
+
+    const getAllUserFiles = async () => {
+        try {
+            const res = await getAllFiles();
+            console.log("res", res)
+            if (res.data.status === 'success') {
+                dispatch({ type: 'GET_ALL_FILES', payload: res.data.data })
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const uploadFiles = async (files) => {
+        try {
+            console.log("files", files)
+            const formData = new FormData()
+            // files.map(file => {
+            //     formData.append('doc', file)
+            // })
+            for (let i = 0; i < files.length; i++) {
+                formData.append('doc', files[i])
+            }
+            const res = await uploadFile(formData);
+            if (res.data.status === 'success') {
+                getAllUserFiles()
+                //socket.emit('uploaded', 'rushabh')
+
+            }
+
+        } catch (error) {
+            console.log("error", error)
+        }
     }
 
     return (
@@ -80,13 +118,17 @@ const Sidebar = () => {
 
                     <List>
                         <ListItem >
-                            <i class="far fa-images fa-2x" ></i>
+                            <label>
+                                <i class="far fa-images fa-2x" ></i>
+                                <input style={{ postion: 'absolute', visibility: "hidden", zIndex: 5, width: "1px", height: "1px" }} multiple type='file' accept="image/*" onChange={(e) => { uploadFiles(e.target.files) }} />
+                            </label>
+
 
                         </ListItem>
                     </List>
                     <List    >
                         <ListItem >
-                            <i onClick={()=>{handleModal('text')}} class="fas fa-pencil-alt fa-2x" ></i>
+                            <i onClick={() => { handleModal('text') }} class="fas fa-pencil-alt fa-2x" ></i>
 
                         </ListItem>
                     </List>
@@ -102,7 +144,7 @@ const Sidebar = () => {
 
                 </div>
             </Drawer>
-            {open && <ModalArea open={open} setOpen={setOpen} handleClose={handleClose} type={type} /> }
+            {open && <ModalArea open={open} setOpen={setOpen} handleClose={handleClose} type={type} />}
         </div>
     );
 }

@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { LoginProvider } from '../src/components/context/LoginProvider'
+import { AuthProvider } from '../src/context/AuthContext'
 import { FileProvider } from '../src/context/FileContext'
 //import { SocketProvider } from '../src/components/context/SocketProvider'
 
@@ -12,11 +12,11 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       {/* <SocketProvider> */}
-        <LoginProvider>
+        <AuthProvider>
           <FileProvider>
             <App />
           </FileProvider>
-        </LoginProvider>
+        </AuthProvider>
       {/* </SocketProvider> */}
     </BrowserRouter>
   </React.StrictMode>,
