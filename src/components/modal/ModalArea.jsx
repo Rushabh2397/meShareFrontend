@@ -117,7 +117,7 @@ const ModalArea = ({ open, handleClose, type }) => {
                                 <div style={{ position: "relative" }}>
                                     <Paper elevation={4} className={classes.textArea} >
                                         <div className={classes.close} onClick={handleClose}>
-                                            <i className="fas fa-times"></i>
+                                            <i className="fas fa-times" style={{cursor:'pointer'}}></i>
                                         </div>
                                         <h5>Text Message</h5>
                                         <TextareaAutosize

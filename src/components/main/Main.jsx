@@ -59,21 +59,20 @@ const Main = () => {
 
     const getAllUserFiles = async () => {
         try {
-            setLoading(true)
+            
             const res = await getAllFiles();
             if (res.data.status === 'success') {
                 dispatch({ type: 'GET_ALL_FILES', payload: res.data.data })
             }
-            setLoading(false)
+          
         } catch (error) {
-           setLoading(false)
            toast.error('Something went wrong!')
         }
     }
 
     const uploadFiles = async (files) => {
         try {
-            
+            setLoading(true)
             const formData = new FormData()
             // files.map(file => {
             //     formData.append('doc', file)
@@ -87,9 +86,12 @@ const Main = () => {
                 //socket.emit('uploaded', 'rushabh')
 
             }
+            setLoading(false)
 
         } catch (error) {
-            toast.error('Something went wrong!')   
+            setLoading(false)
+            toast.error('Something went wrong!') 
+              
         }
     }
     // useEffect(() => {

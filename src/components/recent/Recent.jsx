@@ -61,16 +61,17 @@ const useStyles = makeStyles((theme) => ({
     download: {
         position: 'absolute',
         right: "5px",
-        top: "4px"
+        top: "4px",
+        cursor: 'pointer'
     },
-    textUrl:{
-        border:'1px solid black',
-        marginBottom:"0.6rem",
-        padding:"10px",
-        borderRadius:"6px",
-        fontSize:"1.2rem",
-        letterSpacing:"0.1rem",
-        wordWrap:"wrap"
+    textUrl: {
+        border: '1px solid black',
+        marginBottom: "0.6rem",
+        padding: "10px",
+        borderRadius: "6px",
+        fontSize: "1.2rem",
+        letterSpacing: "0.1rem",
+        wordWrap: "wrap"
     }
 }));
 
@@ -106,22 +107,23 @@ const Recent = ({ userFiles }) => {
                 <div className={classes.imageView}>
 
                     {
-                        
-                        imageArr.map((file,index) => {
-                            return <div key={index} className={classes.fileContainer}>
-                                <div className={classes.imgContainer}>
-                                    <img className={classes.userImg} src={file.file_name} alt="photos"/>
 
+                        imageArr.map((file, index) => {
+                            return <Tooltip key={index} title={file.original_name}>
+                                <div key={index} className={classes.fileContainer}>
+                                    <div className={classes.imgContainer}>
+                                        <img className={classes.userImg} src={file.file_name} alt="photos" />
+
+                                    </div>
+                                    <div className={classes.fileName}>
+                                        {file.original_name}
+                                    </div>
+                                    <GetAppIcon className={classes.download} onClick={() => downloadFile(file.file_name, file.original_name)} />
                                 </div>
-                                <div className={classes.fileName}>
-                                    {file.original_name}
-                                </div>
-                                <GetAppIcon className={classes.download} onClick={() => downloadFile(file.file_name, file.original_name)} />
-                            </div>
+                            </Tooltip>
 
 
 
-                           
 
 
                         })
@@ -133,9 +135,10 @@ const Recent = ({ userFiles }) => {
             {
                 <div className={classes.imageView}>
                     {
-                        
-                        docsArr.map((file,index) => {
-                            let src = file.file_name.split('.')[1] === 'pdf' ? `${process.env.REACT_APP_BACKEND}uploads/document/1633180618213pdf.png` : `${process.env.REACT_APP_BACKEND}uploads/document/1633180618199doc.png`
+
+                        docsArr.map((file, index) => {
+
+                            let src = file.original_name.split('.')[1] === 'pdf' ? `http://13.126.37.93:5540/uploads/document/1633186955262pdf.png` : `http://13.126.37.93:5540/uploads/document/1633187229308doc.png`
                             return <Tooltip key={index} title={file.original_name}>
                                 <div className={classes.fileContainer}>
                                     {/* <Paper elevation={4}> */}
@@ -145,7 +148,7 @@ const Recent = ({ userFiles }) => {
                                     <div className={classes.fileName}>
                                         {file.original_name}
                                     </div>
-                                    <GetAppIcon className={classes.download} onClick={() =>{ downloadFile(file.file_name, file.original_name)}} />
+                                    <GetAppIcon className={classes.download} onClick={() => { downloadFile(file.file_name, file.original_name) }} />
                                     {/* </Paper> */}
                                 </div>
                             </Tooltip>
@@ -158,14 +161,14 @@ const Recent = ({ userFiles }) => {
 
             {textArr.length > 0 && <Typography className={classes.name} variant="h5">Texts / Urls</Typography>}
             {
-                textArr.map((text,index)=>{
+                textArr.map((text, index) => {
                     return <div key={index} className={classes.textUrl}>
                         {
-                            text.type==='text'
-                            ?
-                            <span>{text.text}</span>
-                            :
-                            <a target="_blank" rel="noreferrer" href={`${text.text}`} style={{color:'blue',overflowWrap:'break-word'}} >{text.text}</a>
+                            text.type === 'text'
+                                ?
+                                <span>{text.text}</span>
+                                :
+                                <a target="_blank" rel="noreferrer" href={`${text.text}`} style={{ color: 'blue', overflowWrap: 'break-word' }} >{text.text}</a>
                         }
                     </div>
                 })

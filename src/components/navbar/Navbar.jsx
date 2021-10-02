@@ -66,7 +66,7 @@ const Navbar = () => {
                             {!user.token &&<li className={classes.navItem}><Link to="/login" >Login</Link></li>}
                             {!user.token &&<li className={classes.navItem}><Link to="/signup" >Signup</Link></li>}
                             {user.token &&<li className={classes.navItem}><Link to="/home" >Home</Link></li>}
-                            {user.token && <span onClick={handleClick}  ><Avatar >{user.email.charAt(0).toUpperCase() + user.email.charAt(1).toUpperCase() }</Avatar ></span>}
+                            {user.token && <span style={{cursor:'pointer'}} onClick={handleClick}  ><Avatar >{user.email.charAt(0).toUpperCase() + user.email.charAt(1).toUpperCase() }</Avatar ></span>}
 
                             {/* <li className={classes.navItem}><Link to="/signup" >Logout</Link></li> */}
 

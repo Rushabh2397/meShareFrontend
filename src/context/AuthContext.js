@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }) => {
     const userState = JSON.parse(localStorage.getItem("meShare")) || {email:'',token:''};
     if(userState){
         intialState.token = userState.token
+        intialState.email = userState.email
     }
 
     const [state, dispatch] = useReducer(authReducer,  intialState )
