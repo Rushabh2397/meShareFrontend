@@ -1,4 +1,4 @@
-import { Button, Paper, TextField, Typography } from "@material-ui/core"
+import { Button,Typography } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from "react";
 import { Link,useHistory } from 'react-router-dom'
@@ -125,7 +125,7 @@ const Signup = () => {
                 </div>
                 <Button color="primary" size="large" variant="contained" onClick={register} >Signup</Button>
                 <div className={classes.signup}>
-                    <sapn >Already have an account? <Link style={{ color: "#3f51b5" }} to="/login">Login</Link></sapn>
+                    <span>Already have an account? <Link style={{ color: "#3f51b5" }} to="/login">Login</Link></span>
                 </div>
 
             </form>

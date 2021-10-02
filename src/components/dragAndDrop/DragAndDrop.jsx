@@ -1,6 +1,6 @@
 import Dropzone from 'react-dropzone'
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios'
+import toast from 'react-hot-toast'
 
 const useStyles = makeStyles((theme) => ({
     drag: {
@@ -42,7 +42,13 @@ const Dashboard = ({uploadFiles}) => {
 
     return (
         <div className={classes.drag}>
-            <Dropzone onDrop={acceptedFiles => { handleFileUpload(acceptedFiles) }} multiple={true} maxFiles={2}>
+            <Dropzone 
+            maxSize={1048576} 
+            accept="image/*,.pdf,text/*"   
+            onDrop={acceptedFiles => { if(acceptedFiles.length>0){ handleFileUpload(acceptedFiles)} }} 
+            multiple={true} maxFiles={2}
+            onDropRejected={(file)=>{toast.error("File size must less than 1 MB")}}
+            >
                 {({ getRootProps, getInputProps }) => (
                     <section>
                         <div {...getRootProps()}>

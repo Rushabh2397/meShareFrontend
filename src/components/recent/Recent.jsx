@@ -1,9 +1,7 @@
-import { TextField, Tooltip, Typography } from '@material-ui/core';
-import ImageList from '@material-ui/core/ImageList';
-import ImageListItem from '@material-ui/core/ImageListItem';
+import { Tooltip, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import {Link} from 'react-router-dom'
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -71,7 +69,8 @@ const useStyles = makeStyles((theme) => ({
         padding:"10px",
         borderRadius:"6px",
         fontSize:"1.2rem",
-        letterSpacing:"0.1rem"
+        letterSpacing:"0.1rem",
+        wordWrap:"wrap"
     }
 }));
 
@@ -106,30 +105,12 @@ const Recent = ({ userFiles }) => {
                 &&
                 <div className={classes.imageView}>
 
-                    {/* <div className={classes.imageContainer}>
-                    <Paper elevation={4}>
-                        <img className={classes.image} src={"http://localhost:5000/uploads/image/1623911714452modi.jpeg"} />
-                    </Paper>
-                </div>
-                <div className={classes.imageContainer}>
-                    <Paper elevation={4}>
-                        <img className={classes.image} src={"http://localhost:5000/uploads/image/1623911714227football.jpeg"} />
-                    </Paper>
-                </div> */}
                     {
-                        // imageArr.map(file => {
-                        //     return <div className={classes.imageContainer} onClick={() => downloadFile(file.file_name, file.original_name)}>
-                        //         {/* <Paper elevation={4}> */}
-                        //         <img className={classes.image} src={file.file_name} />
-                        //         {/* </Paper> */}
-                        //     </div>
-
-
-                        // })
-                        imageArr.map(file => {
-                            return <div className={classes.fileContainer}>
+                        
+                        imageArr.map((file,index) => {
+                            return <div key={index} className={classes.fileContainer}>
                                 <div className={classes.imgContainer}>
-                                    <img className={classes.userImg} src={file.file_name} />
+                                    <img className={classes.userImg} src={file.file_name} alt="photos"/>
 
                                 </div>
                                 <div className={classes.fileName}>
@@ -140,11 +121,7 @@ const Recent = ({ userFiles }) => {
 
 
 
-                            // <div className={classes.imageContainer} onClick={() => downloadFile(file.file_name, file.original_name)}>
-                            //     {/* <Paper elevation={4}> */}
-                            //     <img className={classes.image} src={file.file_name} />
-                            //     {/* </Paper> */}
-                            // </div>
+                           
 
 
                         })
@@ -156,30 +133,19 @@ const Recent = ({ userFiles }) => {
             {
                 <div className={classes.imageView}>
                     {
-                        // docsArr.map(file => {
-                        //     let src = file.file_name.split('.')[1] === 'pdf' ? "http://localhost:5000/uploads/document/pdf.png" : "http://localhost:5000/uploads/document/doc.png"
-                        //     return <Tooltip title={file.original_name}>
-                        //         <div className={classes.imageContainer} onClick={() => downloadFile(file.file_name, file.original_name)}>
-                        //             {/* <Paper elevation={4}> */}
-                        //             <img className={classes.image} src={src} />
-                        //             {/* </Paper> */}
-                        //         </div>
-                        //     </Tooltip>
-
-
-                        // })
-                        docsArr.map(file => {
-                            let src = file.file_name.split('.')[1] === 'pdf' ? "http://localhost:5000/uploads/document/pdf.png" : "http://localhost:5000/uploads/document/doc.png"
-                            return <Tooltip title={file.original_name}>
-                                <div className={classes.fileContainer} onClick={() => downloadFile(file.file_name, file.original_name)}>
+                        
+                        docsArr.map((file,index) => {
+                            let src = file.file_name.split('.')[1] === 'pdf' ? `${process.env.REACT_APP_BACKEND}uploads/document/1633180618213pdf.png` : `${process.env.REACT_APP_BACKEND}uploads/document/1633180618199doc.png`
+                            return <Tooltip key={index} title={file.original_name}>
+                                <div className={classes.fileContainer}>
                                     {/* <Paper elevation={4}> */}
                                     <div className={classes.imgContainer}>
-                                        <img className={classes.userImg} src={src} />
+                                        <img className={classes.userImg} src={src} alt="files" />
                                     </div>
                                     <div className={classes.fileName}>
                                         {file.original_name}
                                     </div>
-                                    <GetAppIcon className={classes.download} onClick={() => downloadFile(file.file_name, file.original_name)} />
+                                    <GetAppIcon className={classes.download} onClick={() =>{ downloadFile(file.file_name, file.original_name)}} />
                                     {/* </Paper> */}
                                 </div>
                             </Tooltip>
@@ -192,14 +158,14 @@ const Recent = ({ userFiles }) => {
 
             {textArr.length > 0 && <Typography className={classes.name} variant="h5">Texts / Urls</Typography>}
             {
-                textArr.map(text=>{
-                    return <div className={classes.textUrl}>
+                textArr.map((text,index)=>{
+                    return <div key={index} className={classes.textUrl}>
                         {
                             text.type==='text'
                             ?
                             <span>{text.text}</span>
                             :
-                            <a href={`${text.text}`} >{text.text}</a>
+                            <a target="_blank" rel="noreferrer" href={`${text.text}`} style={{color:'blue',overflowWrap:'break-word'}} >{text.text}</a>
                         }
                     </div>
                 })

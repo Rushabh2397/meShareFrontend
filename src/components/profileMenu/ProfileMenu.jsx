@@ -2,7 +2,7 @@ import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useAuth } from '../../context/AuthContext'
-import {useHistory} from 'react-router-dom'
+import {useHistory,Link} from 'react-router-dom'
 
 const ProfileMenu = ({ anchorEl, handleClick, handleClose }) => {
 
@@ -25,7 +25,7 @@ const ProfileMenu = ({ anchorEl, handleClick, handleClose }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>ChangePassword</MenuItem>
+        <MenuItem onClick={()=>{handleClose()}}><Link to="/change-password" >ChangePassword</Link></MenuItem>
         <MenuItem onClick={()=>{handleClose(); logout()} }>Logout</MenuItem>
       </Menu>
     </div>

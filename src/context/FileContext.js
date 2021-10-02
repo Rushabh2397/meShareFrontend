@@ -6,7 +6,6 @@ const fileReducer = (state, action) => {
     switch (action.type) {
 
         case 'GET_ALL_FILES':
-            console.log("action",action)
             return {
                 files : action.payload
             }

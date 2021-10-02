@@ -5,7 +5,9 @@ import DragAndDrop from '../dragAndDrop/DragAndDrop'
 import Recent from '../recent/Recent'
 import { uploadFile, getAllFiles } from '../api'
 import { useDoc } from '../../context/FileContext'
-import { useEffect, useState } from 'react';
+import { useEffect,useState} from 'react';
+import toast from 'react-hot-toast'
+import Loader from '../loader/Loader'
 //import io from 'socket.io-client'
 
 
@@ -36,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Main = () => {
     const classes = useStyles();
-    const [socket, setSocket] = useState(null)
+    const [loading,setLoading] = useState(false)
+    //const [socket, setSocket] = useState(null)
     const { files, dispatch } = useDoc()
 
     // if (socket) {
@@ -56,22 +59,28 @@ const Main = () => {
 
     const getAllUserFiles = async () => {
         try {
+            setLoading(true)
             const res = await getAllFiles();
-            console.log("res", res)
             if (res.data.status === 'success') {
                 dispatch({ type: 'GET_ALL_FILES', payload: res.data.data })
             }
+            setLoading(false)
         } catch (error) {
-
+           setLoading(false)
+           toast.error('Something went wrong!')
         }
     }
 
     const uploadFiles = async (files) => {
         try {
+            
             const formData = new FormData()
-            files.map(file => {
-                formData.append('doc', file)
-            })
+            // files.map(file => {
+            //     formData.append('doc', file)
+            // })
+            for (let i = 0; i < files.length; i++) {
+                formData.append('doc', files[i])
+            }
             const res = await uploadFile(formData);
             if (res.data.status === 'success') {
                 getAllUserFiles()
@@ -80,7 +89,7 @@ const Main = () => {
             }
 
         } catch (error) {
-
+            toast.error('Something went wrong!')   
         }
     }
     // useEffect(() => {
@@ -92,6 +101,7 @@ const Main = () => {
 
     useEffect(() => {
         getAllUserFiles()
+        // eslint-disable-next-line
     }, [])
 
     return (
@@ -101,6 +111,7 @@ const Main = () => {
                 <DragAndDrop uploadFiles={uploadFiles} />
                 <Recent userFiles={files} />
             </div>
+            {loading && <Loader loading={loading}/>}
         </div>
     );
 }

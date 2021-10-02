@@ -5,10 +5,10 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ModalArea from '../modal/ModalArea'
 import { useState } from 'react';
-import DragAndDrop from '../dragAndDrop/DragAndDrop'
 import { useDoc } from '../../context/FileContext'
 import { uploadFile, getAllFiles } from '../api'
-
+import toast from 'react-hot-toast'
+import Loader from '../loader/Loader'
 const drawerWidth = 70;
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +59,7 @@ const Sidebar = () => {
     const { dispatch } = useDoc()
     const [open, setOpen] = useState(false);
     const [type, setType] = useState('text')
+    const [loading,setLoading] = useState(false)
 
     const handleModal = (type) => {
         setOpen(!open)
@@ -72,34 +73,46 @@ const Sidebar = () => {
     const getAllUserFiles = async () => {
         try {
             const res = await getAllFiles();
-            console.log("res", res)
             if (res.data.status === 'success') {
                 dispatch({ type: 'GET_ALL_FILES', payload: res.data.data })
             }
         } catch (error) {
-
+            toast.error('Something went wrong!')
         }
     }
 
     const uploadFiles = async (files) => {
         try {
             console.log("files", files)
+            setLoading(true)
             const formData = new FormData()
             // files.map(file => {
             //     formData.append('doc', file)
             // })
+            let maxSize = 1048576;
+            let size = 0;
             for (let i = 0; i < files.length; i++) {
                 formData.append('doc', files[i])
+                size = size + files[i].size
             }
-            const res = await uploadFile(formData);
-            if (res.data.status === 'success') {
-                getAllUserFiles()
-                //socket.emit('uploaded', 'rushabh')
+            console.log("size", size)
+            if (size > maxSize) {
+                toast.error('File size should be less than 1 Mb')
+            }
+            if (size < maxSize) {
+                const res = await uploadFile(formData);
+                if (res.data.status === 'success') {
+                    getAllUserFiles()
+                    //socket.emit('uploaded', 'rushabh')
 
+                }
             }
+            setLoading(false)
 
         } catch (error) {
-            console.log("error", error)
+            setLoading(false)
+            toast.error('Something went wrong!')
+            
         }
     }
 
@@ -119,8 +132,8 @@ const Sidebar = () => {
                     <List>
                         <ListItem >
                             <label>
-                                <i class="far fa-images fa-2x" ></i>
-                                <input style={{ postion: 'absolute', visibility: "hidden", zIndex: 5, width: "1px", height: "1px" }} multiple type='file' accept="image/*" onChange={(e) => { uploadFiles(e.target.files) }} />
+                                <i className="far fa-images fa-2x" ></i>
+                                <input style={{ postion: 'absolute', visibility: "hidden", zIndex: 5, width: "1px", height: "1px" }} multiple={true} type='file' accept="image/*,.pdf,text/*" onChange={(e) => { uploadFiles(e.target.files) }} />
                             </label>
 
 
@@ -128,14 +141,14 @@ const Sidebar = () => {
                     </List>
                     <List    >
                         <ListItem >
-                            <i onClick={() => { handleModal('text') }} class="fas fa-pencil-alt fa-2x" ></i>
+                            <i onClick={() => { handleModal('text') }} className="fas fa-pencil-alt fa-2x" ></i>
 
                         </ListItem>
                     </List>
 
                     <List>
                         <ListItem>
-                            <i class="fas fa-info-circle fa-2x"></i>
+                            <i onClick={() => { handleModal('info') }} className="fas fa-info-circle fa-2x"></i>
 
                         </ListItem>
                     </List>
@@ -145,6 +158,7 @@ const Sidebar = () => {
                 </div>
             </Drawer>
             {open && <ModalArea open={open} setOpen={setOpen} handleClose={handleClose} type={type} />}
+            {loading && <Loader loading={loading}/>}
         </div>
     );
 }

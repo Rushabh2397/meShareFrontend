@@ -4,14 +4,16 @@
 //  * Set access token in headers
 //  */
 import axios from "axios";
+
 //import store from "../Redux/store"
 //import { LOGOUT } from "../Redux/login/Types"
 
 (function (axios) {
 
     axios.interceptors.request.use(function (req) {
-        if(req.url.includes('api')){
-        req.headers.token = localStorage.getItem('token');
+        if (req.url.includes('api')) {
+            let user = JSON.parse(localStorage.getItem('meShare'))
+            req.headers.token = user.token;
         }
         return req
     }, function (error) {
@@ -22,8 +24,8 @@ import axios from "axios";
     axios.interceptors.response.use(null, (error) => {
         if (error.response) {
             if (error.response.status === 401) {
-                localStorage.removeItem('token')
-                localStorage.removeItem('login')
+                localStorage.removeItem('meShare')
+                window.location.href = '/login';
                 return Promise.reject(error);
             } else return Promise.reject(error);
         } else if (error.request) {

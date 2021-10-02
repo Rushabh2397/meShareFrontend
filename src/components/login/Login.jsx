@@ -79,12 +79,11 @@ const Login = () => {
                     duration:1500
                 })
                 setLoading(false)
-                history.push('/')
+                history.push('/home')
             }
 
         } catch (error) {
             setLoading(false)
-            console.log("error",error)
             toaster.error(error.response.data.message,{
                 position:'top-right',
                 duration:1500
@@ -116,7 +115,7 @@ const Login = () => {
                 </div>
                 <Button color="primary" size="large" variant="contained" onClick={userLogin} >Login</Button>
                 <div className={classes.signup}>
-                    <sapn >Don't have an account ? <Link style={{color:"#3f51b5"}} to="/signup">Signup</Link></sapn>
+                    <span >Don't have an account ? <Link style={{color:"#3f51b5"}} to="/signup">Signup</Link></span>
                 </div>
 
             </form>

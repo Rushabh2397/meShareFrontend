@@ -7,7 +7,8 @@ import { Avatar } from '@material-ui/core';
 import { useState } from 'react';
 import ProfileMenu from '../profileMenu/ProfileMenu'
 import { useAuth } from '../../context/AuthContext'
-import {Link} from 'react-router-dom'
+import {Link,useRouteMatch} from 'react-router-dom'
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,6 +42,7 @@ const Navbar = () => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const {user} = useAuth();
+    const match = useRouteMatch("/home")
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -52,7 +54,7 @@ const Navbar = () => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="fixed" style={{ zIndex: 1300, }} color="transparent" >
+            <AppBar position="fixed" style={{ zIndex: 1300,background:'white' }} color="transparent" >
                 <Toolbar className={classes.navContainer}>
                     <Typography variant="h4" className={classes.title}>
                         MeShare
@@ -63,7 +65,8 @@ const Navbar = () => {
                         <ul className={classes.navLink}>
                             {!user.token &&<li className={classes.navItem}><Link to="/login" >Login</Link></li>}
                             {!user.token &&<li className={classes.navItem}><Link to="/signup" >Signup</Link></li>}
-                            {user.token && <span onClick={handleClick}  ><Avatar >RS</Avatar ></span>}
+                            {user.token &&<li className={classes.navItem}><Link to="/home" >Home</Link></li>}
+                            {user.token && <span onClick={handleClick}  ><Avatar >{user.email.charAt(0).toUpperCase() + user.email.charAt(1).toUpperCase() }</Avatar ></span>}
 
                             {/* <li className={classes.navItem}><Link to="/signup" >Logout</Link></li> */}
 
@@ -72,7 +75,7 @@ const Navbar = () => {
                 </Toolbar>
             </AppBar>
             <ProfileMenu anchorEl={anchorEl} handleClick={handleClick} handleClose={handleClose}/>
-            {user.token &&<Sidebar />}
+            {user.token && match &&<Sidebar />}
             
         </div>
 
