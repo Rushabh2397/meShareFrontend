@@ -1,7 +1,7 @@
-import {useState} from 'react'
+import { useState } from 'react'
 import { Button, Typography } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles';
-import {Link,useHistory} from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { login } from '../api'
 import toaster from 'react-hot-toast'
 import Loader from '../loader/Loader'
@@ -27,22 +27,22 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         justifyContent: 'center',
         alignItems: 'center',
-        border:"1px solid black"
+        border: "1px solid black"
     },
     input: {
         marginBottom: '15px'
     },
-    loginBtn:{
-       background:"blue"
+    loginBtn: {
+        background: "blue"
     },
-    signup:{
-        fontSize:"0.9rem",
-        marginTop:"0.5rem"
+    signup: {
+        fontSize: "0.9rem",
+        marginTop: "0.5rem"
     },
-    err:{
+    err: {
         color: "red",
-        margin:0,
-        fontSize:"0.8rem"
+        margin: 0,
+        fontSize: "0.8rem"
     }
 }));
 
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 const Login = () => {
     const classes = useStyles();
     const history = useHistory()
-    const {userDispatch} = useAuth()
+    const { userDispatch } = useAuth()
     const [email, setEmail] = useState({
         email: '',
         err: false,
@@ -67,16 +67,16 @@ const Login = () => {
                 formValidated = false
                 setEmail({ ...email, err: true, errMsg: 'Email is not valid.' })
             }
-            
+
             if (formValidated) {
                 setLoading(true)
                 const res = await login({ email: email.email, password: password })
-                let userData = {email:res.data.data.email,token:res.data.data.token}
-                userDispatch({type:'LOGIN_SUCCESS',payload:userData})
-                localStorage.setItem('meShare',JSON.stringify(userData))
-                toaster.success(res.data.message,{
-                    position:'top-right',
-                    duration:1500
+                let userData = { email: res.data.data.email, token: res.data.data.token }
+                userDispatch({ type: 'LOGIN_SUCCESS', payload: userData })
+                localStorage.setItem('meShare', JSON.stringify(userData))
+                toaster.success(res.data.message, {
+                    position: 'top-right',
+                    duration: 1500
                 })
                 setLoading(false)
                 history.push('/home')
@@ -84,9 +84,9 @@ const Login = () => {
 
         } catch (error) {
             setLoading(false)
-            toaster.error(error.response.data.message,{
-                position:'top-right',
-                duration:1500
+            toaster.error(error.response.data.message, {
+                position: 'top-right',
+                duration: 1500
             })
         }
     }
@@ -106,16 +106,20 @@ const Login = () => {
                 <Typography variant="h4">Login</Typography>
                 <div className={classes.input}>
                     <label htmlFor="email">Email</label>
-                    <input  id="email" type="email" placeholder="Enter email" value={email.email} onChange={(e) => { handleOnChange("email", e.target.value) }} />
+                    <div>
+                        <input id="email" type="email" placeholder="Enter email" value={email.email} onChange={(e) => { handleOnChange("email", e.target.value) }} />
+                    </div>
                     {email.err ? <span className={classes.err}>{email.errMsg}</span> : ''}
                 </div>
                 <div className={classes.input}>
                     <label htmlFor="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter Password" onChange={(e) => { handleOnChange("password", e.target.value) }} />
+                    <div>
+                        <input type="password" id="password" placeholder="Enter Password" onChange={(e) => { handleOnChange("password", e.target.value) }} />
+                    </div>
                 </div>
                 <Button color="primary" size="large" variant="contained" onClick={userLogin} >Login</Button>
                 <div className={classes.signup}>
-                    <span >Don't have an account ? <Link style={{color:"#3f51b5"}} to="/signup">Signup</Link></span>
+                    <span >Don't have an account ? <Link style={{ color: "#3f51b5" }} to="/signup">Signup</Link></span>
                 </div>
 
             </form>

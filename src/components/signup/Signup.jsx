@@ -1,7 +1,7 @@
-import { Button,Typography } from "@material-ui/core"
+import { Button, Typography } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from "react";
-import { Link,useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { registerUser } from '../api'
 import toaster from 'react-hot-toast'
 import Loader from '../loader/Loader'
@@ -38,10 +38,10 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "0.9rem",
         marginTop: "0.5rem"
     },
-    err:{
+    err: {
         color: "red",
-        margin:0,
-        fontSize:"0.8rem"
+        margin: 0,
+        fontSize: "0.8rem"
     }
 }));
 
@@ -61,7 +61,7 @@ const Signup = () => {
         errMsg: ''
     });
     const [loading, setLoading] = useState(false)
-     
+
 
     const register = async () => {
         try {
@@ -77,9 +77,9 @@ const Signup = () => {
             if (formValidated) {
                 setLoading(true)
                 const res = await registerUser({ email: email.email, password: password.password })
-                toaster.success(res.data.message,{
-                    position:'top-right',
-                    duration:1500
+                toaster.success(res.data.message, {
+                    position: 'top-right',
+                    duration: 1500
                 })
                 setLoading(false)
                 history.push('/login')
@@ -87,10 +87,10 @@ const Signup = () => {
 
         } catch (error) {
             setLoading(false)
-            console.log("error",error)
-            toaster.error(error.response.data.message,{
-                position:'top-right',
-                duration:1500
+            console.log("error", error)
+            toaster.error(error.response.data.message, {
+                position: 'top-right',
+                duration: 1500
             })
         }
     }
@@ -115,12 +115,16 @@ const Signup = () => {
                 <Typography variant="h4">Signup</Typography>
                 <div className={classes.input}>
                     <label htmlFor="email">Email</label>
-                    <input  id="email" type="email" placeholder="Enter email" value={email.email} onChange={(e) => { handleOnChange("email", e.target.value) }} />
+                    <div>
+                        <input id="email" type="email" placeholder="Enter email" value={email.email} onChange={(e) => { handleOnChange("email", e.target.value) }} />
+                    </div>
                     {email.err ? <span className={classes.err}>{email.errMsg}</span> : ''}
                 </div>
                 <div className={classes.input}>
                     <label htmlFor="password">Password</label>
-                    <input  type="password" id="password" placeholder="Enter Password" value={password.password} onChange={(e) => { handleOnChange("password", e.target.value) }} />
+                    <div>
+                        <input type="password" id="password" placeholder="Enter Password" value={password.password} onChange={(e) => { handleOnChange("password", e.target.value) }} />
+                    </div>
                     {password.err ? <span className={classes.err} >{password.errMsg}</span> : ''}
                 </div>
                 <Button color="primary" size="large" variant="contained" onClick={register} >Signup</Button>
