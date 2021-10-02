@@ -1,3 +1,33 @@
+# MeShare
+
+Live Project [URL](http://13.126.37.93:5540/)
+
+[Project Source Server](https://github.com/Rushabh2397/meShareBackend)
+
+## Description
+
+The purpose of these web app is to ease the way of sharing files/text/urls with yourself(across your devices).
+Consider a scenario where you want to share a link/image/file from mobile to laptop or vice-versa, to share  you will
+either send link/image to one of your friend on whatsapp/telegram or you will have to mail it to yourself means you are 
+going to share link/image to your friend unnecessarily.So for these you can ease MeShare to share your links,files,images
+and then download across your device without the need of mailing or sharing with your friend.
+
+### Features
+
+- Login
+- SignUp
+- Upload Image,Pdf,Text and url
+- Change Password
+
+## Tech Stack
+
+- Mongodb
+- Express
+- Node
+- React
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
