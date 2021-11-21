@@ -57,7 +57,7 @@ const Navbar = () => {
             <AppBar position="fixed" style={{ zIndex: 1300,background:'white' }} color="transparent" >
                 <Toolbar className={classes.navContainer}>
                     <Typography variant="h4" className={classes.title}>
-                        MeShare
+                       <Link to="/home"> MeShare </Link>
                     </Typography>
                     {/* <Button color="inherit">Login</Button>
                     <Button color="inherit">Signup</Button> */}

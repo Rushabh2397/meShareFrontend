@@ -60,6 +60,32 @@ const Login = () => {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
 
+
+    const guestLogin = async () => {
+        try {
+
+            setLoading(true)
+            const res = await login({ email:'doe1@gmail.com', password:"123456"})
+            let userData = { email: res.data.data.email, token: res.data.data.token }
+            userDispatch({ type: 'LOGIN_SUCCESS', payload: userData })
+            localStorage.setItem('meShare', JSON.stringify(userData))
+            toaster.success(res.data.message, {
+                position: 'top-right',
+                duration: 1500
+            })
+            setLoading(false)
+            history.push('/home')
+
+
+        } catch (error) {
+            setLoading(false)
+            toaster.error(error.response.data.message, {
+                position: 'top-right',
+                duration: 1500
+            })
+        }
+    }
+
     const userLogin = async () => {
         try {
             let formValidated = true;
@@ -117,7 +143,10 @@ const Login = () => {
                         <input type="password" id="password" placeholder="Enter Password" onChange={(e) => { handleOnChange("password", e.target.value) }} />
                     </div>
                 </div>
-                <Button color="primary" size="large" variant="contained" onClick={userLogin} >Login</Button>
+                <Button color="primary" size="large" style={{ paddingLeft: "3.2rem", paddingRight: "3.2rem" }} variant="contained" onClick={userLogin} >Login</Button>
+                <div style={{ marginTop: "0.3rem" }}>
+                    <Button color="primary" size="large" variant="contained" onClick={guestLogin} >Guest Login</Button>
+                </div>
                 <div className={classes.signup}>
                     <span >Don't have an account ? <Link style={{ color: "#3f51b5" }} to="/signup">Signup</Link></span>
                 </div>
